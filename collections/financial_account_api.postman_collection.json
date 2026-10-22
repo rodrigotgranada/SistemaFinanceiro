@@ -1,0 +1,186 @@
+{
+  "info": {
+    "name": "sistema-financeiro-api",
+    "description": "Testes dos endpoints da API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "conta1",
+      "value": "123456",
+      "type": "string"
+    },
+    {
+      "key": "conta2",
+      "value": "123457",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Abertura de Conta - Rodrigo Granada",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cpfCnpj\": \"12345678909\",\n  \"nomeTitular\": \"Rodrigo Granada\",\n  \"numeroConta\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas"]
+        }
+      }
+    },
+    {
+      "name": "Abertura de Conta - Rodrigo Granada 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cpfCnpj\": \"98765432100\",\n  \"nomeTitular\": \"Rodrigo Granada 2\",\n  \"numeroConta\": \"123457\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas"]
+        }
+      }
+    },
+    {
+      "name": "Todas as contas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/contas",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas"]
+        }
+      }
+    },
+    {
+      "name": "Buscar conta",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}"]
+        }
+      }
+    },
+    {
+      "name": "Realizar Depósito 1500",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"valor\": 1500.00\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}/depositos",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}", "depositos"]
+        }
+      }
+    },
+    {
+      "name": "Realizar Saque 200",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"valor\": 200.00\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}/saques",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}", "saques"]
+        }
+      }
+    },
+    {
+      "name": "Testar Saque com Saldo Insuficiente 10000",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"valor\": 10000.00\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}/saques",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}", "saques"]
+        }
+      }
+    },
+    {
+      "name": "Transferência Contas 450",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"contaOrigem\": \"{{conta1}}\",\n  \"contaDestino\": \"{{conta2}}\",\n  \"valor\": 450.00,\n  \"descricao\": \"Transferencia teste\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/contas/transferencias",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "transferencias"]
+        }
+      }
+    },
+    {
+      "name": "Consultar Extrato",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}/extrato",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}", "extrato"]
+        }
+      }
+    },
+    {
+      "name": "Consultar Extrato com data",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/contas/{{conta1}}/extrato?dataInicio=2026-01-01T00:00:00Z&dataFim=2026-12-31T23:59:59Z",
+          "host": ["{{baseUrl}}"],
+          "path": ["contas", "{{conta1}}", "extrato"],
+          "query": [
+            { "key": "dataInicio", "value": "2026-01-01T00:00:00Z" },
+            { "key": "dataFim", "value": "2026-12-31T23:59:59Z" }
+          ]
+        }
+      }
+    }
+  ]
+}
