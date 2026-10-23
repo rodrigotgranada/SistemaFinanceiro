@@ -33,10 +33,25 @@ export function useMovimentacoes() {
     }
   }, []);
 
+  const transferir = useCallback(async (dadosTransferencia) => {
+    setLoading(true);
+    setErro(null);
+    try {
+      const resultado = await movimentacaoService.transferir(dadosTransferencia);
+      return resultado;
+    } catch (err) {
+      setErro(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     loadingMovimentacao: loading,
     erroMovimentacao: erro,
     depositar,
     sacar,
+    transferir,
   };
 }
