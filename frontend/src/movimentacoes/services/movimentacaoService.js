@@ -13,3 +13,10 @@ export async function sacar(numeroConta, valor) {
     body: { valor },
   });
 }
+
+export async function transferir(dados) {
+  return request('/contas/transferencias', {
+    method: 'POST',
+    body: dados,
+  });
+}

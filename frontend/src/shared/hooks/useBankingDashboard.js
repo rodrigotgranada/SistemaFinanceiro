@@ -21,7 +21,8 @@ export function useBankingDashboard() {
   const { 
     loadingMovimentacao, 
     depositar, 
-    sacar 
+    sacar,
+    transferir 
   } = useMovimentacoes();
 
   const mostrarAlerta = useCallback((tipo, mensagem) => {
@@ -73,13 +74,38 @@ export function useBankingDashboard() {
     }
   }, [contaSelecionada?.numeroConta, sacar, carregarDetalhesConta, atualizarSaldoContaSelecionada, mostrarAlerta, navigate]);
 
+  const handleTransferencia = useCallback(async (formData, onSuccess) => {
+    const val = parseFloat(formData.valor);
+    if (!formData.contaDestino || !val || val <= 0) {
+      mostrarAlerta('error', APP_TEXTS.messages.preenchaDestino);
+      return;
+    }
+    try {
+      const res = await transferir({
+        contaOrigem: contaSelecionada.numeroConta,
+        contaDestino: formData.contaDestino,
+        valor: val,
+        descricao: formData.descricao
+      });
+      mostrarAlerta('success', APP_TEXTS.messages.transferenciaSucesso(formatarMoeda(val), res.protocolo));
+      if (onSuccess) onSuccess();
+      await carregarDetalhesConta(contaSelecionada.numeroConta);
+      if (res?.saldoAtual !== undefined) {
+        atualizarSaldoContaSelecionada(res.saldoAtual);
+      }
+      navigate('/transferencia');
+    } catch (err) {
+      mostrarAlerta('error', err.message);
+    }
+  }, [contaSelecionada?.numeroConta, transferir, carregarDetalhesConta, atualizarSaldoContaSelecionada, mostrarAlerta, navigate]);
+
   const handleNovaConta = useCallback(async (formData, onSuccess) => {
     try {
       const novaConta = await abrirConta(formData);
       mostrarAlerta('success', APP_TEXTS.messages.contaAbertaSucesso(novaConta.numeroFormatado, novaConta.nomeTitular));
       if (onSuccess) onSuccess();
       await carregarDetalhesConta(novaConta.numeroConta);
-      navigate('/deposito');
+      navigate('/transferencia');
     } catch (err) {
       mostrarAlerta('error', err.message);
     }
@@ -88,6 +114,7 @@ export function useBankingDashboard() {
   const rotasNavegacao = useMemo(() => [
     { path: '/deposito', label: APP_TEXTS.tabs.deposito, precisaConta: true },
     { path: '/saque', label: APP_TEXTS.tabs.saque, precisaConta: true },
+    { path: '/transferencia', label: APP_TEXTS.tabs.transferencia, precisaConta: true },
     { path: '/nova-conta', label: APP_TEXTS.tabs.abrirConta, precisaConta: false },
   ], []);
 
@@ -103,6 +130,7 @@ export function useBankingDashboard() {
     rotasNavegacao,
     handleDeposito,
     handleSaque,
+    handleTransferencia,
     handleNovaConta
   };
 }
