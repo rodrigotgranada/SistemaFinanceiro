@@ -1,0 +1,22 @@
+export const EXTRATOS_TEXTS = {
+  titulo: 'Extrato de Movimentações',
+  separadorAte: 'até',
+  btnFiltrar: 'Filtrar',
+  btnFiltrando: 'Filtrando...',
+  btnLimpar: 'Limpar',
+  thData: 'Data / Hora',
+  thOperacao: 'Operação',
+  thDescricao: 'Descrição',
+  thValor: 'Valor',
+  thSaldo: 'Saldo Resultante',
+  labelContaContraparte: 'Conta:',
+  semMovimentacoes: 'Nenhuma movimentação encontrada para o período selecionado.',
+  operacoes: {
+    DEPOSITO: 'Depósito',
+    SAQUE: 'Saque',
+    TRANSFERENCIA_ENVIO: 'Transf. Enviada',
+    TRANSFERENCIA_RECEBIMENTO: 'Transf. Recebida',
+    TRANSFERENCIA_ORIGEM: 'Transf. Enviada',
+    TRANSFERENCIA_DESTINO: 'Transf. Recebida',
+  },
+};
