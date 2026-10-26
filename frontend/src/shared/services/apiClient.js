@@ -16,7 +16,7 @@ export async function request(endpoint, options = {}) {
   }
 
   const response = await fetch(`${API_BASE}${endpoint}`, config);
-  const isJson = response.headers.get('content-type')?.includes('application/json');
+  const isJson = response.headers.get('content-type')?.includes('json');
   const data = isJson ? await response.json() : null;
 
   if (!response.ok) {
