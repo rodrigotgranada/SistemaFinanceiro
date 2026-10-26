@@ -1,5 +1,5 @@
 export const APP_TEXTS = {
-  headerTitle: 'Sistema Bancário',
+  headerTitle: 'Sistema Financeiro',
   headerSubtitle: 'Gestão de Contas Correntes e Operações Financeiras',
   btnNovaConta: '+ Nova Conta',
   tabs: {
